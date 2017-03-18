@@ -2,12 +2,14 @@ package de.bonn.eis.services.impl;
 
 import de.bonn.eis.models.SemanticSearchResult;
 import de.bonn.eis.services.SearchService;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
 /**
  * Created by korovin on 3/18/2017.
  */
+@Service
 public class SearchServiceBean implements SearchService {
     @Override
     public Collection<SemanticSearchResult> searchByCriterias(Collection<Object> criterias) {

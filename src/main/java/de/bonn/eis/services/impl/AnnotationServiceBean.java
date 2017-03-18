@@ -7,10 +7,14 @@ import org.apache.jena.rdfconnection.RDFConnection;
 import org.apache.jena.rdfconnection.RDFConnectionFactory;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.config.RepositoryConfigException;
+import org.springframework.stereotype.Service;
+
+import static de.bonn.eis.services.helpers.AnnotationConverter.createAnnotationFromRequest;
 
 /**
  * Created by korovin on 3/18/2017.
  */
+@Service
 public class AnnotationServiceBean implements AnnotationService {
     private final RDFConnection connection;
 
@@ -21,7 +25,7 @@ public class AnnotationServiceBean implements AnnotationService {
     @Override
     public AnnotationRequestModel create(AnnotationRequestModel annotation) {
         try {
-            Annotation anno = this.createAnnotationFromRequest(annotation);
+            Annotation anno = createAnnotationFromRequest(annotation);
             return null;
             // return new AnnotationRequestModel();
         } catch (RepositoryException | IllegalAccessException | InstantiationException e) {
@@ -38,10 +42,5 @@ public class AnnotationServiceBean implements AnnotationService {
     @Override
     public boolean delete(String id) {
         return false;
-    }
-
-    private Annotation createAnnotationFromRequest(AnnotationRequestModel annotation) throws RepositoryException, IllegalAccessException, InstantiationException {
-
-        return null;
     }
 }
