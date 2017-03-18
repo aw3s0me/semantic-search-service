@@ -1,14 +1,14 @@
 package de.bonn.eis.services;
 
-import de.bonn.eis.models.Annotation;
+import de.bonn.eis.models.AnnotationRequestModel;
 
 /**
  * Created by korovin on 3/18/2017.
  */
 public interface AnnotationService {
-    Annotation create(Annotation annotation);
+    AnnotationRequestModel create(AnnotationRequestModel annotation);
 
-    Annotation update(Annotation annotation);
+    AnnotationRequestModel update(AnnotationRequestModel annotation);
 
     boolean delete(String id);
 }
