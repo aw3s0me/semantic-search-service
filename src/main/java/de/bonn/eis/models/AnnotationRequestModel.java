@@ -1,8 +1,9 @@
 package de.bonn.eis.models;
 
+import com.hp.hpl.jena.rdf.model.*;
+import com.hp.hpl.jena.vocabulary.RDFS;
+import de.bonn.eis.services.namespaces.NamespaceEnum;
 import org.apache.commons.collections4.ListUtils;
-import org.apache.jena.rdf.model.*;
-import org.apache.jena.vocabulary.RDFS;
 import org.openrdf.repository.RepositoryException;
 
 import java.io.ByteArrayInputStream;
@@ -21,8 +22,6 @@ public class AnnotationRequestModel {
     private String id;
     private String resource;
     private String keyword;
-    private static final String EX_NS = "http://example.org/";
-    private static final String DBPEDIA_NS = "http://dbpedia.org/ontology/";
 
     public AnnotationRequestModel(String keyword, String resource, String id, String typeof, Integer deck, Integer slide, String body) {
         this.keyword = keyword;
@@ -95,21 +94,17 @@ public class AnnotationRequestModel {
     public List<Statement> getStatements() throws RepositoryException, IllegalAccessException, InstantiationException {
         List<Statement> statements = new ArrayList<>();
         Model bodyModel = this.getBodyModel();
-        Resource mainAnnoSubject = ResourceFactory.createResource(EX_NS + getId());
+        Resource mainAnnoSubject = ResourceFactory.createResource(NamespaceEnum.EX.getURI() + getId());
         List<Statement> bodyStatements = this.getStatementListFromBody(bodyModel, mainAnnoSubject);
 
         statements.add(this.getAnnotationStatement(
                 mainAnnoSubject,
-                EX_NS + "slide",
+                NamespaceEnum.EX.getURI() + "slide",
                 ResourceFactory.createPlainLiteral(getSlide().toString())));
         statements.add(this.getAnnotationStatement(
                 mainAnnoSubject,
-                EX_NS + "deck",
+                NamespaceEnum.EX.getURI() + "deck",
                 ResourceFactory.createPlainLiteral(getDeck().toString())));
-//        statements.add(this.getAnnotationStatement(
-//                mainAnnoSubject,
-//                RDF.type.getURI(),
-//                ResourceFactory.createResource(DBPEDIA_NS + getTypeof())));
         statements.add(this.getAnnotationStatement(
                 mainAnnoSubject,
                 RDFS.label.getURI(),

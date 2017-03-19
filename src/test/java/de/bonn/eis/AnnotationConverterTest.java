@@ -1,10 +1,10 @@
 package de.bonn.eis;
 
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.vocabulary.RDFS;
 import de.bonn.eis.models.AnnotationRequestModel;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.Statement;
-import org.apache.jena.vocabulary.RDFS;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openrdf.repository.RepositoryException;
