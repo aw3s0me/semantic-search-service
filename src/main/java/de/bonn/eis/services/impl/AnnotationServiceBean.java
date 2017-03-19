@@ -1,31 +1,31 @@
 package de.bonn.eis.services.impl;
 
-import com.github.anno4j.model.Annotation;
 import de.bonn.eis.models.AnnotationRequestModel;
 import de.bonn.eis.services.AnnotationService;
-import org.apache.jena.rdfconnection.RDFConnection;
-import org.apache.jena.rdfconnection.RDFConnectionFactory;
+import org.apache.jena.rdf.model.Statement;
+import org.gazzax.labs.solrdf.client.SolRDF;
+import org.gazzax.labs.solrdf.client.UnableToBuildSolRDFClientException;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.config.RepositoryConfigException;
 import org.springframework.stereotype.Service;
 
-import static de.bonn.eis.services.helpers.AnnotationConverter.createAnnotationFromRequest;
+import java.util.List;
 
 /**
  * Created by korovin on 3/18/2017.
  */
 @Service
 public class AnnotationServiceBean implements AnnotationService {
-    private final RDFConnection connection;
+    private final SolRDF solrClient;
 
-    public AnnotationServiceBean(String connectionUri) throws RepositoryConfigException, RepositoryException {
-        this.connection = RDFConnectionFactory.connect(connectionUri);
+    public AnnotationServiceBean() throws RepositoryConfigException, RepositoryException, UnableToBuildSolRDFClientException {
+        this.solrClient = SolRDF.newBuilder().build();
     }
 
     @Override
     public AnnotationRequestModel create(AnnotationRequestModel annotation) {
         try {
-            Annotation anno = createAnnotationFromRequest(annotation);
+            List<Statement> statements = annotation.getStatements();
             return null;
             // return new AnnotationRequestModel();
         } catch (RepositoryException | IllegalAccessException | InstantiationException e) {

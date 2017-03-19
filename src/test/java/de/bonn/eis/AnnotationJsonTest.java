@@ -31,18 +31,18 @@ public class AnnotationJsonTest {
                 .append("\"slide\": 1, ")
                 .append("\"deck\": 2, ")
                 .append("\"typeof\": \"Person\", ")
-                .append("\"id\": \"065672d4-0c03-11e7-93ae-92361f002671\", ")
+                .append("\"id\": \"507f1f77bcf86cd799439011\", ")
                 .append("\"resource\": \"http://dbpedia.org/page/Nicholas_II_of_Russia\", ")
                 .append("\"keyword\": \"Nicholas_II_of_Russia\" }").toString();
         System.out.println(content);
         assertThat(this.json.parse(content)).isEqualToComparingFieldByField(new AnnotationRequestModel(
                 "Nicholas_II_of_Russia",
                 "http://dbpedia.org/page/Nicholas_II_of_Russia",
-                "065672d4-0c03-11e7-93ae-92361f002671",
+                "507f1f77bcf86cd799439011",
                 "Person",
                 2,
                 1,
                 "turtle"));
-        assertThat(this.json.parseObject(content).getId()).isEqualTo("065672d4-0c03-11e7-93ae-92361f002671");
+        assertThat(this.json.parseObject(content).getId()).isEqualTo("507f1f77bcf86cd799439011");
     }
 }

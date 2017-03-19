@@ -3,6 +3,7 @@ package de.bonn.eis.api;
 import de.bonn.eis.models.AnnotationRequestModel;
 import de.bonn.eis.services.AnnotationService;
 import de.bonn.eis.services.impl.AnnotationServiceBean;
+import org.gazzax.labs.solrdf.client.UnableToBuildSolRDFClientException;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.config.RepositoryConfigException;
 import org.springframework.http.HttpStatus;
@@ -15,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 public class AnnotationController {
-    private AnnotationService service = new AnnotationServiceBean("Data");
+    private AnnotationService service = new AnnotationServiceBean();
 
-    public AnnotationController() throws RepositoryException, RepositoryConfigException {
+    public AnnotationController() throws RepositoryException, RepositoryConfigException, UnableToBuildSolRDFClientException {
     }
 
     @RequestMapping(
