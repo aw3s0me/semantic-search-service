@@ -11,7 +11,6 @@ import de.bonn.eis.services.impl.solr.SolrRequestHelper;
 import de.bonn.eis.services.namespaces.NamespaceEnum;
 import org.gazzax.labs.solrdf.client.*;
 import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.config.RepositoryConfigException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +24,7 @@ import java.util.List;
 public class AnnotationServiceBean implements AnnotationService {
     private final SolRDF solrClient;
 
-    public AnnotationServiceBean() throws RepositoryConfigException, RepositoryException, UnableToBuildSolRDFClientException {
+    public AnnotationServiceBean() throws UnableToBuildSolRDFClientException {
         this.solrClient = SolRDF.newBuilder().build();
     }
 

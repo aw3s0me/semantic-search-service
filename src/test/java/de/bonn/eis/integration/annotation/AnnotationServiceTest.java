@@ -1,4 +1,4 @@
-package de.bonn.eis.integration;
+package de.bonn.eis.integration.annotation;
 
 import de.bonn.eis.models.AnnotationRequestModel;
 import de.bonn.eis.models.SemanticSearchResult;
@@ -34,7 +34,7 @@ public class AnnotationServiceTest {
                     "<http://dbpedia.org/resource/Nicholas_II_of_Russia>\n" +
                     "  dbpedia:birthPlace dbr:Saint_Petersburg ;\n" +
                     "  rdfs:label \"Nicholas II of Russia\" .");
-    
+
     @Test
     public void insertAnnotationTest() throws RepositoryConfigException, RepositoryException, UnableToBuildSolRDFClientException, InterruptedException {
         AnnotationService service = new AnnotationServiceBean();
