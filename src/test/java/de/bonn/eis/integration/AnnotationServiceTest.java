@@ -11,6 +11,9 @@ import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.config.RepositoryConfigException;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -53,5 +56,19 @@ public class AnnotationServiceTest {
         boolean res = service.delete(testAnnotation.getId());
 
         assertTrue(res);
+    }
+
+    @Test
+    public void isExistAnnotationTest() throws RepositoryConfigException, RepositoryException, UnableToBuildSolRDFClientException, InterruptedException {
+        AnnotationService service = new AnnotationServiceBean();
+        service.create(testAnnotation);
+        boolean isExist = service.isExist(testAnnotation.getId());
+
+        assertTrue(isExist);
+        service.delete(testAnnotation.getId());
+        // need to wait until is deleted completely
+        TimeUnit.SECONDS.sleep(10);
+        boolean isNotExist = service.isExist(testAnnotation.getId());
+        assertFalse(isNotExist);
     }
 }

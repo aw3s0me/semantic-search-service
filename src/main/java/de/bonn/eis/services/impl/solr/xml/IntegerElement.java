@@ -1,4 +1,4 @@
-package de.bonn.eis.services.impl.solr;
+package de.bonn.eis.services.impl.solr.xml;
 
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;

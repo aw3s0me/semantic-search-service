@@ -1,4 +1,4 @@
-package de.bonn.eis.services.impl.solr;
+package de.bonn.eis.services.impl.solr.xml;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 

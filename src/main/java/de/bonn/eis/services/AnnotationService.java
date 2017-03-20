@@ -14,4 +14,6 @@ public interface AnnotationService {
     SemanticSearchResult get(String id);
 
     boolean delete(String id);
+
+    boolean isExist(String id);
 }
