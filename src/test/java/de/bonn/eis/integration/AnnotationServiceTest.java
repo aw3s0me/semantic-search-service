@@ -34,18 +34,25 @@ public class AnnotationServiceTest {
                     "<http://dbpedia.org/resource/Nicholas_II_of_Russia>\n" +
                     "  dbpedia:birthPlace dbr:Saint_Petersburg ;\n" +
                     "  rdfs:label \"Nicholas II of Russia\" .");
-
+    
     @Test
-    public void insertAnnotationTest() throws RepositoryConfigException, RepositoryException, UnableToBuildSolRDFClientException {
+    public void insertAnnotationTest() throws RepositoryConfigException, RepositoryException, UnableToBuildSolRDFClientException, InterruptedException {
         AnnotationService service = new AnnotationServiceBean();
 
         // SELECT * WHERE { ?s <http://purl.org/dc/elements/1.1/date> ?o } LIMIT 10
         // service.get("http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature142");
+        boolean isExist = service.isExist(testAnnotation.getId());
+        if (isExist) {
+            service.delete(testAnnotation.getId());
+        }
+
         service.create(testAnnotation);
+        TimeUnit.SECONDS.sleep(10);
         SemanticSearchResult res = service.get(testAnnotation.getId());
         // Test select statement
         assertTrue((res.getSlideId().equals(1)));
         assertTrue((res.getDeckId().equals(2)));
+        service.delete(testAnnotation.getId());
     }
 
     @Test
@@ -62,13 +69,40 @@ public class AnnotationServiceTest {
     public void isExistAnnotationTest() throws RepositoryConfigException, RepositoryException, UnableToBuildSolRDFClientException, InterruptedException {
         AnnotationService service = new AnnotationServiceBean();
         service.create(testAnnotation);
+        TimeUnit.SECONDS.sleep(5);
         boolean isExist = service.isExist(testAnnotation.getId());
 
         assertTrue(isExist);
         service.delete(testAnnotation.getId());
+        TimeUnit.SECONDS.sleep(5);
         // need to wait until is deleted completely
-        TimeUnit.SECONDS.sleep(10);
         boolean isNotExist = service.isExist(testAnnotation.getId());
         assertFalse(isNotExist);
+    }
+
+    @Test
+    public void updateAnnotationTest() throws RepositoryConfigException, RepositoryException, UnableToBuildSolRDFClientException, InterruptedException {
+        AnnotationService service = new AnnotationServiceBean();
+        AnnotationRequestModel newAnnotation = new AnnotationRequestModel(
+                "Nicholas_II_of_Russia",
+                "http://dbpedia.org/page/Nicholas_III_of_Russia",
+                "507f1f77bcf86cd799439011",
+                "Person",
+                5,
+                5,
+                "@prefix dbpedia: <http://dbpedia.org/ontology/> .\n" +
+                        "@prefix dbr: <http://dbpedia.org/page/> .\n" +
+                        "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
+                        "<http://dbpedia.org/resource/Nicholas_II_of_Russia>\n" +
+                        "  dbpedia:predecessor dbr:Alexander_III_of_Russia ;\n" +
+                        "  rdfs:label \"Nicholas II of Russia\" .");
+        service.create(testAnnotation);
+        TimeUnit.SECONDS.sleep(5);
+        service.update(newAnnotation);
+        TimeUnit.SECONDS.sleep(5);
+        SemanticSearchResult res = service.get(testAnnotation.getId());
+        // Test select statement
+        assertTrue((res.getSlideId().equals(5)));
+        assertTrue((res.getDeckId().equals(5)));
     }
 }

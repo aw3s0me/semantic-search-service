@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * Created by korovin on 3/20/2017.
  */
 public final class SolrRequestHelper {
-    private static final String SOLR_API_SPARQL = "http://127.0.0.1:8080/solr/store/sparql";
+    private static final String SOLR_API_SPARQL = "http://127.0.0.1:8080/solr/store/sparql?commit=true";
 
     private static final Response parseSolrResponse(String solrResponse) throws JAXBException {
         JAXBContext jaxbContext =  JAXBContextFactory.createContext(new Class[] {ResponseHeader.class, Response.class, IntegerElement.class}, null);
@@ -32,12 +32,13 @@ public final class SolrRequestHelper {
         return (Response) unmarshaller.unmarshal(reader);
     }
 
-    public static final ResponseEntity<String> postDeleteForEntity(String sparql) {
+    public static final ResponseEntity<String> postUpdate(String sparql) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.setAccept(new ArrayList<MediaType>() {{ add(MediaType.APPLICATION_JSON); }});
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("update", sparql);
+        map.add("commit", "true");
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
         RestTemplate restTemplate = new RestTemplate();

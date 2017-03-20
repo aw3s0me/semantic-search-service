@@ -9,10 +9,7 @@ import de.bonn.eis.models.SemanticSearchResult;
 import de.bonn.eis.services.AnnotationService;
 import de.bonn.eis.services.impl.solr.SolrRequestHelper;
 import de.bonn.eis.services.namespaces.NamespaceEnum;
-import org.gazzax.labs.solrdf.client.SolRDF;
-import org.gazzax.labs.solrdf.client.UnableToAddException;
-import org.gazzax.labs.solrdf.client.UnableToBuildSolRDFClientException;
-import org.gazzax.labs.solrdf.client.UnableToExecuteQueryException;
+import org.gazzax.labs.solrdf.client.*;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.config.RepositoryConfigException;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +42,18 @@ public class AnnotationServiceBean implements AnnotationService {
 
     @Override
     public AnnotationRequestModel update(AnnotationRequestModel annotation) {
-        return null;
+        try {
+            this.delete(annotation.getId());
+            List<Statement> statements = annotation.getStatements();
+            this.solrClient.add(statements);
+            this.solrClient.commit();
+            return annotation;
+        } catch (IllegalAccessException | RepositoryException | InstantiationException | UnableToAddException | UnableToCommitException e) {
+            return null;
+        }
+//        Resource mainAnno = AnnotationRequestModel.getMainAnnotationResource(annotation.getId());
+//        String sparql = String.format("DELETE DATA {<%1$s> ?p ?o} LIMIT 10", mainAnno.getURI());
+//        SolrRequestHelper.postUpdate(sparql);
     }
 
     @Override
@@ -87,7 +95,7 @@ public class AnnotationServiceBean implements AnnotationService {
         String sparql = String.format("DELETE WHERE {<%1$s> ?p ?o}", mainAnno.getURI());
 
         try {
-            ResponseEntity<String> parsedResponse = SolrRequestHelper.postDeleteForEntity(sparql);
+            ResponseEntity<String> parsedResponse = SolrRequestHelper.postUpdate(sparql);
             return SolrRequestHelper.isRequestSucc(parsedResponse);
         } catch (JAXBException e) {
             return false;
@@ -99,8 +107,10 @@ public class AnnotationServiceBean implements AnnotationService {
         Resource mainAnno = AnnotationRequestModel.getMainAnnotationResource(id);
         String sparql = String.format("ASK {<%1$s> ?p ?o}", mainAnno.getURI());
         try {
-            return solrClient.ask(sparql);
-        } catch (UnableToExecuteQueryException e) {
+            boolean res = solrClient.ask(sparql);
+            solrClient.commit();
+            return res;
+        } catch (UnableToExecuteQueryException | UnableToCommitException e) {
             return false;
         }
     }
