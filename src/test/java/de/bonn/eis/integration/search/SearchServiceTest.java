@@ -54,6 +54,21 @@ public class SearchServiceTest {
                     "  a dbpedia:Event ;\n" +
                     "  rdfs:label \"World War II\" .");
 
+    AnnotationRequestModel testAnnotation3 = new AnnotationRequestModel(
+            "Vietnam_War",
+            "http://dbpedia.org/page/Vietnam_War",
+            "507f1237bcf87cd799439012",
+            "Event",
+            5,
+            2,
+            "@prefix dbpedia: <http://dbpedia.org/ontology/> .\n" +
+                    "@prefix dbr: <http://dbpedia.org/page/> .\n" +
+                    "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
+                    "<http://dbpedia.org/resource/World_War_II>\n" +
+                    "  dbpedia:place dbr:North_Vietnam ;\n" +
+                    "  a dbpedia:Event ;\n" +
+                    "  rdfs:label \"Vietnam War\" .");
+
     public SearchServiceTest() throws UnableToBuildSolRDFClientException {
     }
 
@@ -89,5 +104,24 @@ public class SearchServiceTest {
         assertTrue(result.getCount() == 1);
         annotationService.delete(testAnnotation1.getId());
         annotationService.delete(testAnnotation2.getId());
+    }
+
+    @Test
+    public void searchByPropertyAndTypeTest() throws UnableToBuildSolRDFClientException, InterruptedException {
+        annotationService.create(testAnnotation1);
+        annotationService.create(testAnnotation2);
+        annotationService.create(testAnnotation3);
+        TimeUnit.SECONDS.sleep(10);
+        Collection<SemanticDeckRelevanceResult> res = searchService.searchByTypeAndProperty(
+                new SemanticSearchRequest("http://dbpedia.org/ontology/Event", "http://dbpedia.org/ontology/place"));
+
+        assertTrue(res.size() == 1);
+        SemanticDeckRelevanceResult result = (SemanticDeckRelevanceResult) res.toArray()[0];
+
+        assertTrue(result.getDeck() == 5);
+        assertTrue(result.getCount() == 1);
+        annotationService.delete(testAnnotation1.getId());
+        annotationService.delete(testAnnotation2.getId());
+        annotationService.delete(testAnnotation3.getId());
     }
 }
