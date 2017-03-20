@@ -44,4 +44,14 @@ public class AnnotationServiceTest {
         assertTrue((res.getSlideId().equals(1)));
         assertTrue((res.getDeckId().equals(2)));
     }
+
+    @Test
+    public void deleteAnnotationTest() throws RepositoryConfigException, RepositoryException, UnableToBuildSolRDFClientException {
+        AnnotationService service = new AnnotationServiceBean();
+        service.create(testAnnotation);
+
+        boolean res = service.delete(testAnnotation.getId());
+
+        assertTrue(res);
+    }
 }

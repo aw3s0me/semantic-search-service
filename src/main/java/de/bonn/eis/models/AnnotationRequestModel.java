@@ -23,6 +23,13 @@ public class AnnotationRequestModel {
     private String resource;
     private String keyword;
 
+    private Statement getAnnotationStatement(Resource resource, String propertyUri, RDFNode obj) {
+        return ResourceFactory.createStatement(
+                resource,
+                ResourceFactory.createProperty(propertyUri),
+                obj);
+    }
+
     public AnnotationRequestModel(String keyword, String resource, String id, String typeof, Integer deck, Integer slide, String body) {
         this.keyword = keyword;
         this.resource = resource;
@@ -61,11 +68,12 @@ public class AnnotationRequestModel {
         return keyword;
     }
 
-    private Statement getAnnotationStatement(Resource resource, String propertyUri, RDFNode obj) {
-        return ResourceFactory.createStatement(
-                resource,
-                ResourceFactory.createProperty(propertyUri),
-                obj);
+    public Resource getMainAnnotationResource() {
+        return ResourceFactory.createResource(NamespaceEnum.EX.getURI() + this.getId());
+    }
+
+    public final static Resource getMainAnnotationResource(String annoId) {
+        return ResourceFactory.createResource(NamespaceEnum.EX.getURI() + annoId);
     }
 
     public List<Statement> getStatementListFromBody(Model body, Resource mainSubject) {
