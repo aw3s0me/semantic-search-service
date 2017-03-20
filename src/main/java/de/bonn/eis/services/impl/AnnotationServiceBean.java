@@ -1,10 +1,8 @@
 package de.bonn.eis.services.impl;
 
+import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
-import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.*;
 import de.bonn.eis.models.AnnotationRequestModel;
 import de.bonn.eis.models.SemanticSearchResult;
 import de.bonn.eis.services.AnnotationService;
@@ -53,21 +51,27 @@ public class AnnotationServiceBean implements AnnotationService {
 
         try {
             ResultSet result = solrClient.select(sparql);
-            Model model = result.getResourceModel();
+            Integer deckId = null;
+            Integer slideId = null;
 
-            if (model == null) return null;
+            while (result.hasNext()) {
+                QuerySolution solution = result.nextSolution();
 
-            Statement slideProp = model.getProperty(mainAnno, ResourceFactory.createProperty(NamespaceEnum.EX.getURI() + "slide"));
+                Resource node = solution.getResource("?p");
 
-            if (slideProp == null) return null;
-            Integer slideId = slideProp.getInt();
+                if (node.getURI().equals(NamespaceEnum.EX.getURI() + "slide")) {
+                    slideId = solution.getLiteral("?o").getInt();
+                } else if (node.getURI().equals(NamespaceEnum.EX.getURI() + "deck")) {
+                    deckId = solution.getLiteral("?o").getInt();
+                }
 
-            Statement deckProp = model.getProperty(mainAnno, ResourceFactory.createProperty(NamespaceEnum.EX.getURI() + "deck"));
-            if (deckProp == null) return null;
-            Integer deckId = deckProp.getInt();
-
-            // TODO: parse result set to AnnotationRequestmodel
-            return new SemanticSearchResult(slideId, deckId);
+                // if deck id and slide id initialized, no need to iterate anymore
+                if (deckId != null && slideId != null) {
+                    return new SemanticSearchResult(deckId, slideId);
+                }
+            }
+            // if could not find deck id and slide id
+            return null;
         } catch (UnableToExecuteQueryException e) {
             return null;
         }
