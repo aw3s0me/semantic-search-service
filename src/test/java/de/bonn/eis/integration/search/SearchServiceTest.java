@@ -75,7 +75,7 @@ public class SearchServiceTest {
     }
 
     @Test
-    public void searchByTypeProperty() throws UnableToBuildSolRDFClientException, InterruptedException {
+    public void searchByPropertyTest() throws UnableToBuildSolRDFClientException, InterruptedException {
         annotationService.create(testAnnotation1);
         annotationService.create(testAnnotation2);
         TimeUnit.SECONDS.sleep(10);
