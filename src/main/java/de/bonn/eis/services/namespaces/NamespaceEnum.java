@@ -5,7 +5,7 @@ package de.bonn.eis.services.namespaces;
  */
 public enum NamespaceEnum {
     EX("http://example.org/"),
-    DBPEDIA("http://dbpedia.org/ontology/");
+    DBO("http://dbpedia.org/ontology/");
 
     private final String uri;
 
