@@ -146,4 +146,21 @@ public class SearchServiceTest {
         annotationService.delete(testAnnotation2.getId());
         annotationService.delete(testAnnotation3.getId());
     }
+
+    @Test
+    public void searchByPropertyRegexTest() throws InterruptedException {
+        annotationService.create(testAnnotation1);
+        annotationService.create(testAnnotation2);
+        annotationService.create(testAnnotation3);
+        TimeUnit.SECONDS.sleep(10);
+        Collection<SemanticDeckRelevanceResult> res = searchService.searchByTypeAndProperty(
+                new SemanticSearchRequest("http://dbpedia.org/ontology/Event", "http://www.w3.org/2000/01/rdf-schema#label"),
+                ARQFilterEnum.REGEX.getExpression("o", new NodeValueString("War")));
+
+        assertTrue(res.size() == 2);
+
+        annotationService.delete(testAnnotation1.getId());
+        annotationService.delete(testAnnotation2.getId());
+        annotationService.delete(testAnnotation3.getId());
+    }
 }

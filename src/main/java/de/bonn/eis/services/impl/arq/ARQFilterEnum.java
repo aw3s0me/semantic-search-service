@@ -2,6 +2,7 @@ package de.bonn.eis.services.impl.arq;
 
 import com.hp.hpl.jena.sparql.expr.*;
 import com.hp.hpl.jena.sparql.expr.nodevalue.NodeValueInteger;
+import com.hp.hpl.jena.sparql.expr.nodevalue.NodeValueString;
 import com.hp.hpl.jena.sparql.syntax.ElementFilter;
 
 /**
@@ -12,6 +13,7 @@ public enum ARQFilterEnum {
     GREATER("greater"),
     LESS_OR_EQUAL("lesseq"),
     GREATER_OR_EQUAL("greatereq"),
+    REGEX("regex"),
     EQUALS("greatereq");
 
     private final String value;
@@ -32,6 +34,8 @@ public enum ARQFilterEnum {
                 return new E_GreaterThanOrEqual(new ExprVar(variable), value);
             case EQUALS:
                 return new E_Equals(new ExprVar(variable), value);
+            case REGEX:
+                return new E_Regex(new ExprVar(variable), value.getString(), "i");
             default:
                 return null;
         }
@@ -39,7 +43,8 @@ public enum ARQFilterEnum {
 
     public static void main(String[] args) {
         Expr expr = ARQFilterEnum.LESS.getExpression("o", new NodeValueInteger(20));
-        System.out.println(expr.toString());
-        System.out.println((new ElementFilter(expr)).toString());
+        Expr expr1 = ARQFilterEnum.REGEX.getExpression("o", new NodeValueString("rem"));
+        System.out.println(expr1.toString());
+        System.out.println((new ElementFilter(expr1)).toString());
     }
 }
