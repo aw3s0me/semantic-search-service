@@ -4,7 +4,6 @@ import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.vocabulary.RDFS;
 import de.bonn.eis.services.namespaces.NamespaceEnum;
 import org.apache.commons.collections4.ListUtils;
-import org.openrdf.repository.RepositoryException;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -99,7 +98,7 @@ public class AnnotationRequestModel {
         return model;
     }
 
-    public List<Statement> getStatements() throws RepositoryException, IllegalAccessException, InstantiationException {
+    public List<Statement> getStatements() throws IllegalAccessException, InstantiationException {
         List<Statement> statements = new ArrayList<>();
         Model bodyModel = this.getBodyModel();
         Resource mainAnnoSubject = ResourceFactory.createResource(NamespaceEnum.EX.getURI() + getId());

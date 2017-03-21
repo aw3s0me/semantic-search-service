@@ -10,7 +10,6 @@ import de.bonn.eis.services.AnnotationService;
 import de.bonn.eis.services.impl.solr.SolrRequestHelper;
 import de.bonn.eis.services.namespaces.NamespaceEnum;
 import org.gazzax.labs.solrdf.client.*;
-import org.openrdf.repository.RepositoryException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +33,7 @@ public class AnnotationServiceBean implements AnnotationService {
             List<Statement> statements = annotation.getStatements();
             this.solrClient.add(statements);
             return annotation;
-        } catch (IllegalAccessException | RepositoryException | InstantiationException | UnableToAddException e) {
+        } catch (IllegalAccessException | InstantiationException | UnableToAddException e) {
             return null;
         }
     }
@@ -47,12 +46,9 @@ public class AnnotationServiceBean implements AnnotationService {
             this.solrClient.add(statements);
             this.solrClient.commit();
             return annotation;
-        } catch (IllegalAccessException | RepositoryException | InstantiationException | UnableToAddException | UnableToCommitException e) {
+        } catch (IllegalAccessException | InstantiationException | UnableToAddException | UnableToCommitException e) {
             return null;
         }
-//        Resource mainAnno = AnnotationRequestModel.getMainAnnotationResource(annotation.getId());
-//        String sparql = String.format("DELETE DATA {<%1$s> ?p ?o} LIMIT 10", mainAnno.getURI());
-//        SolrRequestHelper.postUpdate(sparql);
     }
 
     @Override

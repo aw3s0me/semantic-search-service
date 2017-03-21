@@ -7,8 +7,6 @@ import de.bonn.eis.services.impl.AnnotationServiceBean;
 import org.gazzax.labs.solrdf.client.UnableToBuildSolRDFClientException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.config.RepositoryConfigException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.concurrent.TimeUnit;
@@ -36,7 +34,7 @@ public class AnnotationServiceTest {
                     "  rdfs:label \"Nicholas II of Russia\" .");
 
     @Test
-    public void insertAnnotationTest() throws RepositoryConfigException, RepositoryException, UnableToBuildSolRDFClientException, InterruptedException {
+    public void insertAnnotationTest() throws UnableToBuildSolRDFClientException, InterruptedException {
         AnnotationService service = new AnnotationServiceBean();
 
         // SELECT * WHERE { ?s <http://purl.org/dc/elements/1.1/date> ?o } LIMIT 10
@@ -56,7 +54,7 @@ public class AnnotationServiceTest {
     }
 
     @Test
-    public void deleteAnnotationTest() throws RepositoryConfigException, RepositoryException, UnableToBuildSolRDFClientException {
+    public void deleteAnnotationTest() throws UnableToBuildSolRDFClientException {
         AnnotationService service = new AnnotationServiceBean();
         service.create(testAnnotation);
 
@@ -66,7 +64,7 @@ public class AnnotationServiceTest {
     }
 
     @Test
-    public void isExistAnnotationTest() throws RepositoryConfigException, RepositoryException, UnableToBuildSolRDFClientException, InterruptedException {
+    public void isExistAnnotationTest() throws UnableToBuildSolRDFClientException, InterruptedException {
         AnnotationService service = new AnnotationServiceBean();
         service.create(testAnnotation);
         TimeUnit.SECONDS.sleep(5);
@@ -81,7 +79,7 @@ public class AnnotationServiceTest {
     }
 
     @Test
-    public void updateAnnotationTest() throws RepositoryConfigException, RepositoryException, UnableToBuildSolRDFClientException, InterruptedException {
+    public void updateAnnotationTest() throws UnableToBuildSolRDFClientException, InterruptedException {
         AnnotationService service = new AnnotationServiceBean();
         AnnotationRequestModel newAnnotation = new AnnotationRequestModel(
                 "Nicholas_II_of_Russia",

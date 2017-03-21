@@ -7,7 +7,6 @@ import com.hp.hpl.jena.vocabulary.RDFS;
 import de.bonn.eis.models.AnnotationRequestModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openrdf.repository.RepositoryException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
@@ -57,7 +56,7 @@ public class AnnotationConverterTest {
     }
 
     @Test
-    public void shouldGetAllStatements() throws RepositoryException, IllegalAccessException, InstantiationException {
+    public void shouldGetAllStatements() throws IllegalAccessException, InstantiationException {
         List<Statement> statementList = this.testAnnotation.getStatements();
         statementList.forEach(System.out::println);
 

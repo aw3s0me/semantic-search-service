@@ -5,6 +5,7 @@ import de.bonn.eis.models.SemanticSearchRequest;
 import de.bonn.eis.services.SearchService;
 import de.bonn.eis.services.impl.SearchServiceBean;
 import org.gazzax.labs.solrdf.client.UnableToBuildSolRDFClientException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,16 @@ import java.util.Collection;
  */
 @RestController
 public class SearchController {
-    private SearchService service = new SearchServiceBean();
+    @Autowired
+    private SearchService service;
 
-    public SearchController() throws UnableToBuildSolRDFClientException {
+    public SearchController() {
+        try {
+            service = new SearchServiceBean();
+        } catch (UnableToBuildSolRDFClientException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     @RequestMapping(
