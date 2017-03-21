@@ -1,5 +1,6 @@
 package de.bonn.eis.integration.search;
 
+import com.hp.hpl.jena.sparql.expr.nodevalue.NodeValueString;
 import de.bonn.eis.models.AnnotationRequestModel;
 import de.bonn.eis.models.SemanticDeckRelevanceResult;
 import de.bonn.eis.models.SemanticSearchRequest;
@@ -7,6 +8,7 @@ import de.bonn.eis.services.AnnotationService;
 import de.bonn.eis.services.SearchService;
 import de.bonn.eis.services.impl.AnnotationServiceBean;
 import de.bonn.eis.services.impl.SearchServiceBean;
+import de.bonn.eis.services.impl.arq.ARQFilterEnum;
 import org.gazzax.labs.solrdf.client.UnableToBuildSolRDFClientException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -114,6 +116,26 @@ public class SearchServiceTest {
         TimeUnit.SECONDS.sleep(10);
         Collection<SemanticDeckRelevanceResult> res = searchService.searchByTypeAndProperty(
                 new SemanticSearchRequest("http://dbpedia.org/ontology/Event", "http://dbpedia.org/ontology/place"));
+
+        assertTrue(res.size() == 1);
+        SemanticDeckRelevanceResult result = (SemanticDeckRelevanceResult) res.toArray()[0];
+
+        assertTrue(result.getDeck() == 5);
+        assertTrue(result.getCount() == 1);
+        annotationService.delete(testAnnotation1.getId());
+        annotationService.delete(testAnnotation2.getId());
+        annotationService.delete(testAnnotation3.getId());
+    }
+
+    @Test
+    public void searchByPropertyValueTest() throws InterruptedException {
+        annotationService.create(testAnnotation1);
+        annotationService.create(testAnnotation2);
+        annotationService.create(testAnnotation3);
+        TimeUnit.SECONDS.sleep(10);
+        Collection<SemanticDeckRelevanceResult> res = searchService.searchByTypeAndProperty(
+                new SemanticSearchRequest("http://dbpedia.org/ontology/Event", "http://www.w3.org/2000/01/rdf-schema#label"),
+                ARQFilterEnum.EQUALS.getExpression("o", new NodeValueString("Vietnam War")));
 
         assertTrue(res.size() == 1);
         SemanticDeckRelevanceResult result = (SemanticDeckRelevanceResult) res.toArray()[0];

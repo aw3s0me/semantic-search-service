@@ -2,6 +2,8 @@ package de.bonn.eis.services.impl;
 
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.sparql.expr.Expr;
+import com.hp.hpl.jena.sparql.syntax.ElementFilter;
 import de.bonn.eis.models.SemanticDeckRelevanceResult;
 import de.bonn.eis.models.SemanticSearchRequest;
 import de.bonn.eis.models.SemanticSearchResult;
@@ -38,45 +40,70 @@ public class SearchServiceBean implements SearchService {
         return SPARQL_BEGIN + String.format(" a <%1$s> ; ", type) + String.format(" <%1$s> ?o . ", property) + SPARQL_END;
     }
 
+    private String sparqlByFilter(String type, String property, Expr expr) {
+        return SPARQL_BEGIN + String.format(" a <%1$s> ; ", type) + String.format(" <%1$s> ?o . ", property) + (new ElementFilter(expr)).toString() + " " + SPARQL_END;
+    }
+
+    private String getFinalSparql(String type, String property) {
+        boolean isTypeNotBlank = StringUtils.isNotBlank(type);
+        boolean isPropertyNotBlank = StringUtils.isNotBlank(property);
+
+        if (isTypeNotBlank && isPropertyNotBlank) {
+            return this.sparqlByTypeandProperty(type, property);
+        } else if (isTypeNotBlank) {
+            return this.sparqlByType(type);
+        } else if (isPropertyNotBlank) {
+            return this.sparqlByProperty(property);
+        } else {
+            return null;
+        }
+    }
+
+    private boolean isValidForFilter(String type, String property) {
+        return StringUtils.isNotBlank(type) && StringUtils.isNotBlank(property);
+    }
+
+    private List<SemanticDeckRelevanceResult> readSearchResults(ResultSet result) {
+        List<SemanticDeckRelevanceResult> results = new ArrayList<>();
+        while (result.hasNext()) {
+            QuerySolution solution = result.nextSolution();
+            results.add(new SemanticDeckRelevanceResult(solution.getLiteral("?deck").getInt(), solution.getLiteral("?c").getInt()));
+        }
+        return results;
+    }
+
+    private Collection<SemanticDeckRelevanceResult> performSearch(String finalSparql) throws UnableToExecuteQueryException {
+        System.out.println(finalSparql);
+        ResultSet result = solrClient.select(finalSparql);
+
+        return this.readSearchResults(result);
+    }
+
     public SearchServiceBean() throws UnableToBuildSolRDFClientException {
         this.solrClient = SolRDF.newBuilder().build();
     }
 
     @Override
-    public Collection<SemanticSearchResult> searchByCriterias(Collection<Object> criterias) {
-        return null;
+    public Collection<SemanticDeckRelevanceResult> searchByTypeAndProperty(SemanticSearchRequest request) {
+        String finalSparql = this.getFinalSparql(request.getType(), request.getProperty());
+
+        try {
+            return this.performSearch(finalSparql);
+        } catch (UnableToExecuteQueryException e) {
+            return null;
+        }
     }
 
     @Override
-    public Collection<SemanticDeckRelevanceResult> searchByTypeAndProperty(SemanticSearchRequest request) {
-        String property = request.getProperty();
-        String type = request.getType();
-        boolean isTypeNotBlank = StringUtils.isNotBlank(type);
-        boolean isPropertyNotBlank = StringUtils.isNotBlank(property);
-        String finalSparql;
-        List<SemanticDeckRelevanceResult> results = new ArrayList<>();
-
-        if (isTypeNotBlank && isPropertyNotBlank) {
-            finalSparql = this.sparqlByTypeandProperty(type, property);
-        } else if (isTypeNotBlank) {
-            finalSparql = this.sparqlByType(type);
-        } else if (isPropertyNotBlank) {
-            finalSparql = this.sparqlByProperty(property);
-        } else {
+    public Collection<SemanticDeckRelevanceResult> searchByTypeAndProperty(SemanticSearchRequest request, Expr filter) {
+        if (!this.isValidForFilter(request.getType(), request.getProperty())) {
             return null;
         }
 
-        try {
-            System.out.println(finalSparql);
-            ResultSet result = solrClient.select(finalSparql);
-            while (result.hasNext()) {
-                QuerySolution solution = result.nextSolution();
-                results.add(new SemanticDeckRelevanceResult(solution.getLiteral("?deck").getInt(), solution.getLiteral("?c").getInt()));
-                System.out.println(solution.toString());
-            }
+        String finalSparql = this.sparqlByFilter(request.getType(), request.getProperty(), filter);
 
-            // TODO: add collection
-            return results;
+        try {
+            return this.performSearch(finalSparql);
         } catch (UnableToExecuteQueryException e) {
             return null;
         }

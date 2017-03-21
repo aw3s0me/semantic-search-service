@@ -38,7 +38,7 @@ public enum ARQFilterEnum {
     }
 
     public static void main(String[] args) {
-        Expr expr = ARQFilterEnum.LESS.getExpression("s", new NodeValueInteger(20));
+        Expr expr = ARQFilterEnum.LESS.getExpression("o", new NodeValueInteger(20));
         System.out.println(expr.toString());
         System.out.println((new ElementFilter(expr)).toString());
     }
