@@ -10,6 +10,8 @@ import de.bonn.eis.services.impl.AnnotationServiceBean;
 import de.bonn.eis.services.impl.SearchServiceBean;
 import de.bonn.eis.services.impl.arq.ARQFilterEnum;
 import org.gazzax.labs.solrdf.client.UnableToBuildSolRDFClientException;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -71,31 +73,38 @@ public class SearchServiceTest {
                     "  a dbpedia:Event ;\n" +
                     "  rdfs:label \"Vietnam War\" .");
 
+    @Before
+    public void initAnnoations() throws InterruptedException {
+        annotationService.create(testAnnotation1);
+        annotationService.create(testAnnotation2);
+        annotationService.create(testAnnotation3);
+        TimeUnit.SECONDS.sleep(10);
+    }
+
+    @After
+    public void removeAnnotations() {
+        annotationService.delete(testAnnotation1.getId());
+        annotationService.delete(testAnnotation2.getId());
+        annotationService.delete(testAnnotation3.getId());
+    }
+
     public SearchServiceTest() throws UnableToBuildSolRDFClientException {
     }
 
     @Test
     public void searchByTypeTest() throws UnableToBuildSolRDFClientException, InterruptedException {
-        annotationService.create(testAnnotation1);
-        annotationService.create(testAnnotation2);
-        TimeUnit.SECONDS.sleep(10);
         Collection<SemanticDeckRelevanceResult> res = searchService.searchByTypeAndProperty(
-                new SemanticSearchRequest("http://dbpedia.org/ontology/Event", null));
+                new SemanticSearchRequest("http://dbpedia.org/ontology/Person", null));
 
         assertTrue(res.size() == 1);
         SemanticDeckRelevanceResult result = (SemanticDeckRelevanceResult) res.toArray()[0];
 
-        assertTrue(result.getDeck() == 3);
+        assertTrue(result.getDeck() == 2);
         assertTrue(result.getCount() == 1);
-        annotationService.delete(testAnnotation1.getId());
-        annotationService.delete(testAnnotation2.getId());
     }
 
     @Test
     public void searchByPropertyTest() throws UnableToBuildSolRDFClientException, InterruptedException {
-        annotationService.create(testAnnotation1);
-        annotationService.create(testAnnotation2);
-        TimeUnit.SECONDS.sleep(10);
         Collection<SemanticDeckRelevanceResult> res = searchService.searchByTypeAndProperty(
                 new SemanticSearchRequest(null, "http://dbpedia.org/ontology/birthPlace"));
 
@@ -104,16 +113,10 @@ public class SearchServiceTest {
 
         assertTrue(result.getDeck() == 2);
         assertTrue(result.getCount() == 1);
-        annotationService.delete(testAnnotation1.getId());
-        annotationService.delete(testAnnotation2.getId());
     }
 
     @Test
     public void searchByPropertyAndTypeTest() throws UnableToBuildSolRDFClientException, InterruptedException {
-        annotationService.create(testAnnotation1);
-        annotationService.create(testAnnotation2);
-        annotationService.create(testAnnotation3);
-        TimeUnit.SECONDS.sleep(10);
         Collection<SemanticDeckRelevanceResult> res = searchService.searchByTypeAndProperty(
                 new SemanticSearchRequest("http://dbpedia.org/ontology/Event", "http://dbpedia.org/ontology/place"));
 
@@ -122,17 +125,10 @@ public class SearchServiceTest {
 
         assertTrue(result.getDeck() == 5);
         assertTrue(result.getCount() == 1);
-        annotationService.delete(testAnnotation1.getId());
-        annotationService.delete(testAnnotation2.getId());
-        annotationService.delete(testAnnotation3.getId());
     }
 
     @Test
     public void searchByPropertyValueTest() throws InterruptedException {
-        annotationService.create(testAnnotation1);
-        annotationService.create(testAnnotation2);
-        annotationService.create(testAnnotation3);
-        TimeUnit.SECONDS.sleep(10);
         Collection<SemanticDeckRelevanceResult> res = searchService.searchByTypeAndProperty(
                 new SemanticSearchRequest("http://dbpedia.org/ontology/Event", "http://www.w3.org/2000/01/rdf-schema#label"),
                 ARQFilterEnum.EQUALS.getExpression("o", new NodeValueString("Vietnam War")));
@@ -142,25 +138,14 @@ public class SearchServiceTest {
 
         assertTrue(result.getDeck() == 5);
         assertTrue(result.getCount() == 1);
-        annotationService.delete(testAnnotation1.getId());
-        annotationService.delete(testAnnotation2.getId());
-        annotationService.delete(testAnnotation3.getId());
     }
 
     @Test
     public void searchByPropertyRegexTest() throws InterruptedException {
-        annotationService.create(testAnnotation1);
-        annotationService.create(testAnnotation2);
-        annotationService.create(testAnnotation3);
-        TimeUnit.SECONDS.sleep(10);
         Collection<SemanticDeckRelevanceResult> res = searchService.searchByTypeAndProperty(
                 new SemanticSearchRequest("http://dbpedia.org/ontology/Event", "http://www.w3.org/2000/01/rdf-schema#label"),
                 ARQFilterEnum.REGEX.getExpression("o", new NodeValueString("War")));
 
         assertTrue(res.size() == 2);
-
-        annotationService.delete(testAnnotation1.getId());
-        annotationService.delete(testAnnotation2.getId());
-        annotationService.delete(testAnnotation3.getId());
     }
 }
