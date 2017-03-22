@@ -7,6 +7,7 @@ import com.hp.hpl.jena.vocabulary.RDFS;
 import de.bonn.eis.models.AnnotationRequestModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.semarglproject.rdf.ParseException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
@@ -27,12 +28,13 @@ public class AnnotationConverterTest {
             "Person",
             2,
             1,
-            "@prefix dbpedia: <http://dbpedia.org/ontology/> .\n" +
-                    "@prefix dbr: <http://dbpedia.org/page/> .\n" +
-                    "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
-                    "<http://dbpedia.org/resource/Nicholas_II_of_Russia>\n" +
-                    "  dbpedia:birthPlace dbr:Saint_Petersburg ;\n" +
-                    "  rdfs:label \"Nicholas II of Russia\" .");
+            "<span class=\"r_entity r_organization\" typeof=\"http://dbpedia.org/ontology/Person\" " +
+                    "data-id=\"r_HyL67eehg\" resource=\"http://dbpedia.org/resource/Nicholas_II_of_Russia\" " +
+                    "data-hasqtip=\"0\" aria-describedby=\"qtip-0\"> " +
+                    "<span class=\"r_prop r_name\" property=\"http://www.w3.org/2000/01/rdf-schema#label\">" +
+                    "Nicholas II of Russia</span>" +
+                    "<meta property=\"http://dbpedia.org/ontology/birthPlace\" resource=\"http://dbpedia.org/page/Saint_Petersburg\" />" +
+                    "</span>");
 
     /**
      * RDfa
@@ -47,7 +49,7 @@ public class AnnotationConverterTest {
      *
      */
     @Test
-    public void shouldConvertBodyToJenaModel() {
+    public void shouldConvertBodyToJenaModel() throws ParseException {
         Model model = this.testAnnotation.getBodyModel();
         System.out.println(model.toString());
         Resource res = model.getResource("http://dbpedia.org/resource/Nicholas_II_of_Russia");
@@ -56,10 +58,10 @@ public class AnnotationConverterTest {
     }
 
     @Test
-    public void shouldGetAllStatements() throws IllegalAccessException, InstantiationException {
+    public void shouldGetAllStatements() throws IllegalAccessException, InstantiationException, ParseException {
         List<Statement> statementList = this.testAnnotation.getStatements();
         statementList.forEach(System.out::println);
 
-        assertEquals(statementList.size(), 5);
+        assertEquals(5, statementList.size());
     }
 }

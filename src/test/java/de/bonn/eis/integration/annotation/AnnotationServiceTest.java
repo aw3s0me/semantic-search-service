@@ -26,12 +26,13 @@ public class AnnotationServiceTest {
             "Person",
             2,
             1,
-            "@prefix dbpedia: <http://dbpedia.org/ontology/> .\n" +
-                    "@prefix dbr: <http://dbpedia.org/page/> .\n" +
-                    "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
-                    "<http://dbpedia.org/resource/Nicholas_II_of_Russia>\n" +
-                    "  dbpedia:birthPlace dbr:Saint_Petersburg ;\n" +
-                    "  rdfs:label \"Nicholas II of Russia\" .");
+            "<span class=\"r_entity r_organization\" typeof=\"http://dbpedia.org/ontology/Person\" " +
+                    "data-id=\"r_HyL67eehg\" resource=\"http://dbpedia.org/resource/Nicholas_II_of_Russia\" " +
+                    "data-hasqtip=\"0\" aria-describedby=\"qtip-0\"> " +
+                    "<span class=\"r_prop r_name\" property=\"http://www.w3.org/2000/01/rdf-schema#label\">" +
+                    "Nicholas II of Russia</span>" +
+                    "<meta property=\"http://dbpedia.org/ontology/birthPlace\" resource=\"http://dbpedia.org/page/Saint_Petersburg\" />" +
+                    "</span>");
 
     @Test
     public void insertAnnotationTest() throws UnableToBuildSolRDFClientException, InterruptedException {

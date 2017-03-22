@@ -10,6 +10,7 @@ import de.bonn.eis.services.AnnotationService;
 import de.bonn.eis.services.impl.solr.SolrRequestHelper;
 import de.bonn.eis.services.namespaces.NamespaceEnum;
 import org.gazzax.labs.solrdf.client.*;
+import org.semarglproject.rdf.ParseException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,7 @@ public class AnnotationServiceBean implements AnnotationService {
             List<Statement> statements = annotation.getStatements();
             this.solrClient.add(statements);
             return annotation;
-        } catch (IllegalAccessException | InstantiationException | UnableToAddException e) {
+        } catch (IllegalAccessException | InstantiationException | UnableToAddException | ParseException e) {
             return null;
         }
     }
@@ -46,7 +47,7 @@ public class AnnotationServiceBean implements AnnotationService {
             this.solrClient.add(statements);
             this.solrClient.commit();
             return annotation;
-        } catch (IllegalAccessException | InstantiationException | UnableToAddException | UnableToCommitException e) {
+        } catch (IllegalAccessException | InstantiationException | UnableToAddException | UnableToCommitException | ParseException e) {
             return null;
         }
     }

@@ -1,12 +1,11 @@
 package de.bonn.eis.models;
 
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.RDFS;
+import de.bonn.eis.services.impl.rdfa.RDFaParser;
 import de.bonn.eis.services.namespaces.NamespaceEnum;
 import org.apache.commons.collections4.ListUtils;
+import org.semarglproject.rdf.ParseException;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,14 +90,12 @@ public class AnnotationRequestModel {
         return statements;
     }
 
-    public Model getBodyModel() {
-        Model model = ModelFactory.createDefaultModel();
-        InputStream is = new ByteArrayInputStream(body.getBytes());
-        model.read(is, null, "TTL");
-        return model;
+    public Model getBodyModel() throws ParseException {
+        System.out.println(this.getBody());
+        return RDFaParser.parse(this.getBody());
     }
 
-    public List<Statement> getStatements() throws IllegalAccessException, InstantiationException {
+    public List<Statement> getStatements() throws IllegalAccessException, InstantiationException, ParseException {
         List<Statement> statements = new ArrayList<>();
         Model bodyModel = this.getBodyModel();
         Resource mainAnnoSubject = ResourceFactory.createResource(NamespaceEnum.EX.getURI() + getId());
@@ -112,11 +109,6 @@ public class AnnotationRequestModel {
                 mainAnnoSubject,
                 NamespaceEnum.EX.getURI() + "deck",
                 ResourceFactory.createPlainLiteral(getDeck().toString())));
-        statements.add(this.getAnnotationStatement(
-                mainAnnoSubject,
-                RDFS.label.getURI(),
-                ResourceFactory.createPlainLiteral(getKeyword())
-        ));
 
         return ListUtils.union(statements, bodyStatements);
     }

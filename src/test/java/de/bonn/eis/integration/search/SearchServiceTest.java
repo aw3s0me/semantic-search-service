@@ -36,13 +36,13 @@ public class SearchServiceTest {
             "Person",
             2,
             1,
-            "@prefix dbpedia: <http://dbpedia.org/ontology/> .\n" +
-                    "@prefix dbr: <http://dbpedia.org/page/> .\n" +
-                    "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
-                    "<http://dbpedia.org/resource/Nicholas_II_of_Russia>\n" +
-                    "  dbpedia:birthPlace dbr:Saint_Petersburg ;\n" +
-                    "  a dbpedia:Person ;\n" +
-                    "  rdfs:label \"Nicholas II of Russia\" .");
+            "<span class=\"r_entity r_organization\" typeof=\"http://dbpedia.org/ontology/Person\" " +
+                    "data-id=\"r_HyL67eehg\" resource=\"http://dbpedia.org/resource/Nicholas_II_of_Russia\" " +
+                    "data-hasqtip=\"0\" aria-describedby=\"qtip-0\"> " +
+                    "<span class=\"r_prop r_name\" property=\"http://www.w3.org/2000/01/rdf-schema#label\">" +
+                    "Nicholas II of Russia</span>" +
+                    "<meta property=\"http://dbpedia.org/ontology/birthPlace\" resource=\"http://dbpedia.org/page/Saint_Petersburg\" />" +
+                    "</span>");
     AnnotationRequestModel testAnnotation2 = new AnnotationRequestModel(
             "World_War_II",
             "http://dbpedia.org/page/World_War_II",
@@ -50,13 +50,13 @@ public class SearchServiceTest {
             "Event",
             3,
             2,
-            "@prefix dbpedia: <http://dbpedia.org/ontology/> .\n" +
-                    "@prefix dbr: <http://dbpedia.org/page/> .\n" +
-                    "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
-                    "<http://dbpedia.org/resource/World_War_II>\n" +
-                    "  dbpedia:commander dbr:Hirohito ;\n" +
-                    "  a dbpedia:Event ;\n" +
-                    "  rdfs:label \"World War II\" .");
+            "<span class=\"r_entity r_organization\" typeof=\"http://dbpedia.org/ontology/Event\" " +
+                    "data-id=\"r_HyL67eehg\" resource=\"http://dbpedia.org/resource/World_War_II\" " +
+                    "data-hasqtip=\"0\" aria-describedby=\"qtip-0\"> " +
+                    "<span class=\"r_prop r_name\" property=\"http://www.w3.org/2000/01/rdf-schema#label\">" +
+                    "World War II</span>" +
+                    "<meta property=\"http://dbpedia.org/ontology/commander\" resource=\"http://dbpedia.org/page/Hirohito\" />" +
+                    "</span>");
 
     AnnotationRequestModel testAnnotation3 = new AnnotationRequestModel(
             "Vietnam_War",
@@ -65,13 +65,13 @@ public class SearchServiceTest {
             "Event",
             5,
             2,
-            "@prefix dbpedia: <http://dbpedia.org/ontology/> .\n" +
-                    "@prefix dbr: <http://dbpedia.org/page/> .\n" +
-                    "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
-                    "<http://dbpedia.org/resource/World_War_II>\n" +
-                    "  dbpedia:place dbr:North_Vietnam ;\n" +
-                    "  a dbpedia:Event ;\n" +
-                    "  rdfs:label \"Vietnam War\" .");
+            "<span class=\"r_entity r_organization\" typeof=\"http://dbpedia.org/ontology/Event\" " +
+                    "data-id=\"r_HyL67eehg\" resource=\"http://dbpedia.org/resource/Vietnam_War\" " +
+                    "data-hasqtip=\"0\" aria-describedby=\"qtip-0\"> " +
+                    "<span class=\"r_prop r_name\" property=\"http://www.w3.org/2000/01/rdf-schema#label\">" +
+                    "Vietnam War</span>" +
+                    "<meta property=\"http://dbpedia.org/ontology/place\" resource=\"http://dbpedia.org/page/North_Vietnam\" />" +
+                    "</span>");
 
     @Before
     public void initAnnoations() throws InterruptedException {
