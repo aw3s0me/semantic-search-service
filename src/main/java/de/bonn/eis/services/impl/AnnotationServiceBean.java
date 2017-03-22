@@ -29,26 +29,26 @@ public class AnnotationServiceBean implements AnnotationService {
     }
 
     @Override
-    public AnnotationRequestModel create(AnnotationRequestModel annotation) {
+    public boolean create(AnnotationRequestModel annotation) {
         try {
             List<Statement> statements = annotation.getStatements();
             this.solrClient.add(statements);
-            return annotation;
+            return true;
         } catch (IllegalAccessException | InstantiationException | UnableToAddException | ParseException e) {
-            return null;
+            return false;
         }
     }
 
     @Override
-    public AnnotationRequestModel update(AnnotationRequestModel annotation) {
+    public boolean update(AnnotationRequestModel annotation) {
         try {
             this.delete(annotation.getId());
             List<Statement> statements = annotation.getStatements();
             this.solrClient.add(statements);
             this.solrClient.commit();
-            return annotation;
+            return true;
         } catch (IllegalAccessException | InstantiationException | UnableToAddException | UnableToCommitException | ParseException e) {
-            return null;
+            return false;
         }
     }
 

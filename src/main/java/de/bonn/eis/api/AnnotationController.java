@@ -1,6 +1,7 @@
 package de.bonn.eis.api;
 
 import de.bonn.eis.models.AnnotationRequestModel;
+import de.bonn.eis.models.RestResponseMessage;
 import de.bonn.eis.services.AnnotationService;
 import de.bonn.eis.services.impl.AnnotationServiceBean;
 import org.gazzax.labs.solrdf.client.UnableToBuildSolRDFClientException;
@@ -32,9 +33,14 @@ public class AnnotationController {
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AnnotationRequestModel> createAnnotation(@RequestBody AnnotationRequestModel annotation) {
-        AnnotationRequestModel savedAnnotation = service.create(annotation);
-        return new ResponseEntity<>(savedAnnotation, HttpStatus.CREATED);
+    public ResponseEntity<RestResponseMessage> createAnnotation(@RequestBody AnnotationRequestModel annotation) {
+        boolean res = service.create(annotation);
+
+        if (!res) {
+            return new ResponseEntity<>(new RestResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(new RestResponseMessage(HttpStatus.CREATED), HttpStatus.CREATED);
     }
 
     @RequestMapping(
@@ -42,27 +48,27 @@ public class AnnotationController {
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AnnotationRequestModel> updateAnnotation(@RequestBody AnnotationRequestModel annotation) {
-        AnnotationRequestModel savedAnnotation = service.update(annotation);
+    public ResponseEntity<RestResponseMessage> updateAnnotation(@RequestBody AnnotationRequestModel annotation) {
+        boolean res = service.update(annotation);
 
-        if (savedAnnotation == null) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (!res) {
+            return new ResponseEntity<>(new RestResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<>(savedAnnotation, HttpStatus.CREATED);
+        return new ResponseEntity<>(new RestResponseMessage(HttpStatus.OK), HttpStatus.OK);
     }
 
     @RequestMapping(
             value = "/api/annotations/{id}",
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AnnotationRequestModel> removeAnnotation(@PathVariable String id) {
+    public ResponseEntity<RestResponseMessage> removeAnnotation(@PathVariable String id) {
         boolean res = service.delete(id);
 
         if (!res) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new RestResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new RestResponseMessage(HttpStatus.OK), HttpStatus.OK);
     }
 }

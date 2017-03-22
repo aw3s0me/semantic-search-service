@@ -7,9 +7,9 @@ import de.bonn.eis.models.SemanticSearchResult;
  * Created by korovin on 3/18/2017.
  */
 public interface AnnotationService {
-    AnnotationRequestModel create(AnnotationRequestModel annotation);
+    boolean create(AnnotationRequestModel annotation);
 
-    AnnotationRequestModel update(AnnotationRequestModel annotation);
+    boolean update(AnnotationRequestModel annotation);
 
     SemanticSearchResult get(String id);
 
