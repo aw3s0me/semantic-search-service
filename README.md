@@ -20,6 +20,12 @@ $SOLR_HOME is path to /tmp/solr/solrdf-download/solrdf/solrdf-integration-tests/
 gradle bootRun
 ```
 
+## Testing result in SolRDF
+
+```
+curl "http://127.0.0.1:8080/solr/store/sparql" --data-urlencode "q=SELECT ?deck (count(?deck) as ?c) WHERE { ?annotation <http://example.org/deck> ?deck;  a <http://dbpedia.org/ontology/Event> . } GROUP BY ?deck ORDER BY ?deck LIMIT 10" -H "Accept: application/sparql-results+json"
+
+```
 
 
 # Deprecated additional installation
