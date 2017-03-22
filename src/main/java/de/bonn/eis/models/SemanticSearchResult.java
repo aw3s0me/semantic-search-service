@@ -4,19 +4,19 @@ package de.bonn.eis.models;
  * Created by korovin on 3/18/2017.
  */
 public class SemanticSearchResult {
-    Integer slideId;
-    Integer deckId;
+    String slideId;
+    String deckId;
 
-    public SemanticSearchResult(Integer deckId, Integer slideId) {
+    public SemanticSearchResult(String deckId, String slideId) {
         this.deckId = deckId;
         this.slideId = slideId;
     }
 
-    public Integer getSlideId() {
+    public String getSlideId() {
         return slideId;
     }
 
-    public Integer getDeckId() {
+    public String getDeckId() {
         return deckId;
     }
 }

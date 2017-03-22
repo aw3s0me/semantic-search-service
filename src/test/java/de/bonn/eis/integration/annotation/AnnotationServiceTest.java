@@ -24,8 +24,8 @@ public class AnnotationServiceTest {
             "http://dbpedia.org/page/Nicholas_II_of_Russia",
             "507f1f77bcf86cd799439011",
             "Person",
-            2,
-            1,
+            "2",
+            "1",
             "<span class=\"r_entity r_organization\" typeof=\"http://dbpedia.org/ontology/Person\" " +
                     "data-id=\"r_HyL67eehg\" resource=\"http://dbpedia.org/resource/Nicholas_II_of_Russia\" " +
                     "data-hasqtip=\"0\" aria-describedby=\"qtip-0\"> " +
@@ -49,8 +49,8 @@ public class AnnotationServiceTest {
         TimeUnit.SECONDS.sleep(10);
         SemanticSearchResult res = service.get(testAnnotation.getId());
         // Test select statement
-        assertTrue((res.getSlideId().equals(1)));
-        assertTrue((res.getDeckId().equals(2)));
+        assertTrue((res.getSlideId().equals("1")));
+        assertTrue((res.getDeckId().equals("2")));
         service.delete(testAnnotation.getId());
     }
 
@@ -87,8 +87,8 @@ public class AnnotationServiceTest {
                 "http://dbpedia.org/page/Nicholas_III_of_Russia",
                 "507f1f77bcf86cd799439011",
                 "Person",
-                5,
-                5,
+                "5",
+                "5",
                 "@prefix dbpedia: <http://dbpedia.org/ontology/> .\n" +
                         "@prefix dbr: <http://dbpedia.org/page/> .\n" +
                         "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
@@ -101,7 +101,7 @@ public class AnnotationServiceTest {
         TimeUnit.SECONDS.sleep(5);
         SemanticSearchResult res = service.get(testAnnotation.getId());
         // Test select statement
-        assertTrue((res.getSlideId().equals(5)));
-        assertTrue((res.getDeckId().equals(5)));
+        assertTrue((res.getSlideId().equals("5")));
+        assertTrue((res.getDeckId().equals("5")));
     }
 }

@@ -14,8 +14,8 @@ import java.util.List;
  */
 public class AnnotationRequestModel {
     private String body;
-    private Integer slide;
-    private Integer deck;
+    private String slide;
+    private String deck;
     private String typeof;
     private String id;
     private String resource;
@@ -28,7 +28,7 @@ public class AnnotationRequestModel {
                 obj);
     }
 
-    public AnnotationRequestModel(String keyword, String resource, String id, String typeof, Integer deck, Integer slide, String body) {
+    public AnnotationRequestModel(String keyword, String resource, String id, String typeof, String deck, String slide, String body) {
         this.keyword = keyword;
         this.resource = resource;
         this.id = id;
@@ -38,16 +38,47 @@ public class AnnotationRequestModel {
         this.body = body;
     }
 
+    public AnnotationRequestModel() {
+    }
+
     public String getBody() {
         return body;
     }
 
-    public Integer getSlide() {
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public String getSlide() {
         return slide;
     }
 
-    public Integer getDeck() {
+    public void setSlide(String slide) {
+        this.slide = slide;
+    }
+
+    public String getDeck() {
         return deck;
+    }
+
+    public void setDeck(String deck) {
+        this.deck = deck;
+    }
+
+    public void setTypeof(String typeof) {
+        this.typeof = typeof;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setResource(String resource) {
+        this.resource = resource;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
     public String getTypeof() {

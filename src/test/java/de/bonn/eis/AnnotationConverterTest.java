@@ -26,8 +26,8 @@ public class AnnotationConverterTest {
             "http://dbpedia.org/page/Nicholas_II_of_Russia",
             "507f1f77bcf86cd799439011",
             "Person",
-            2,
-            1,
+            "2",
+            "1",
             "<span class=\"r_entity r_organization\" typeof=\"http://dbpedia.org/ontology/Person\" " +
                     "data-id=\"r_HyL67eehg\" resource=\"http://dbpedia.org/resource/Nicholas_II_of_Russia\" " +
                     "data-hasqtip=\"0\" aria-describedby=\"qtip-0\"> " +

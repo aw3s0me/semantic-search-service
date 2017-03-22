@@ -59,8 +59,8 @@ public class AnnotationServiceBean implements AnnotationService {
 
         try {
             ResultSet result = solrClient.select(sparql);
-            Integer deckId = null;
-            Integer slideId = null;
+            String deckId = null;
+            String slideId = null;
 
             while (result.hasNext()) {
                 QuerySolution solution = result.nextSolution();
@@ -68,9 +68,9 @@ public class AnnotationServiceBean implements AnnotationService {
                 Resource node = solution.getResource("?p");
 
                 if (node.getURI().equals(NamespaceEnum.EX.getURI() + "slide")) {
-                    slideId = solution.getLiteral("?o").getInt();
+                    slideId = solution.getLiteral("?o").getString();
                 } else if (node.getURI().equals(NamespaceEnum.EX.getURI() + "deck")) {
-                    deckId = solution.getLiteral("?o").getInt();
+                    deckId = solution.getLiteral("?o").getString();
                 }
 
                 // if deck id and slide id initialized, no need to iterate anymore

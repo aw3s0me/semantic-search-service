@@ -67,7 +67,7 @@ public class SearchServiceBean implements SearchService {
         List<SemanticDeckRelevanceResult> results = new ArrayList<>();
         while (result.hasNext()) {
             QuerySolution solution = result.nextSolution();
-            results.add(new SemanticDeckRelevanceResult(solution.getLiteral("?deck").getInt(), solution.getLiteral("?c").getInt()));
+            results.add(new SemanticDeckRelevanceResult(solution.getLiteral("?deck").getString(), solution.getLiteral("?c").getString()));
         }
         return results;
     }

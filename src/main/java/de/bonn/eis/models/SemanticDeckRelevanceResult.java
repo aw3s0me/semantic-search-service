@@ -4,19 +4,19 @@ package de.bonn.eis.models;
  * Created by korovin on 3/20/2017.
  */
 public class SemanticDeckRelevanceResult {
-    private Integer deck;
-    private Integer count;
+    private String deck;
+    private String count;
 
-    public SemanticDeckRelevanceResult(Integer deck, Integer count) {
+    public SemanticDeckRelevanceResult(String deck, String count) {
         this.deck = deck;
         this.count = count;
     }
 
-    public Integer getDeck() {
+    public String getDeck() {
         return deck;
     }
 
-    public Integer getCount() {
+    public String getCount() {
         return count;
     }
 }

@@ -34,8 +34,8 @@ public class SearchServiceTest {
             "http://dbpedia.org/page/Nicholas_II_of_Russia",
             "507f1f77bcf86cd799439011",
             "Person",
-            2,
-            1,
+            "2",
+            "1",
             "<span class=\"r_entity r_organization\" typeof=\"http://dbpedia.org/ontology/Person\" " +
                     "data-id=\"r_HyL67eehg\" resource=\"http://dbpedia.org/resource/Nicholas_II_of_Russia\" " +
                     "data-hasqtip=\"0\" aria-describedby=\"qtip-0\"> " +
@@ -48,8 +48,8 @@ public class SearchServiceTest {
             "http://dbpedia.org/page/World_War_II",
             "507f1f77bcf87cd799439012",
             "Event",
-            3,
-            2,
+            "3",
+            "2",
             "<span class=\"r_entity r_organization\" typeof=\"http://dbpedia.org/ontology/Event\" " +
                     "data-id=\"r_HyL67eehg\" resource=\"http://dbpedia.org/resource/World_War_II\" " +
                     "data-hasqtip=\"0\" aria-describedby=\"qtip-0\"> " +
@@ -63,8 +63,8 @@ public class SearchServiceTest {
             "http://dbpedia.org/page/Vietnam_War",
             "507f1237bcf87cd799439012",
             "Event",
-            5,
-            2,
+            "5",
+            "2",
             "<span class=\"r_entity r_organization\" typeof=\"http://dbpedia.org/ontology/Event\" " +
                     "data-id=\"r_HyL67eehg\" resource=\"http://dbpedia.org/resource/Vietnam_War\" " +
                     "data-hasqtip=\"0\" aria-describedby=\"qtip-0\"> " +
@@ -99,8 +99,8 @@ public class SearchServiceTest {
         assertTrue(res.size() == 1);
         SemanticDeckRelevanceResult result = (SemanticDeckRelevanceResult) res.toArray()[0];
 
-        assertTrue(result.getDeck() == 2);
-        assertTrue(result.getCount() == 1);
+        assertTrue(result.getDeck().equals("2"));
+        assertTrue(result.getCount().equals("1"));
     }
 
     @Test
@@ -111,8 +111,8 @@ public class SearchServiceTest {
         assertTrue(res.size() == 1);
         SemanticDeckRelevanceResult result = (SemanticDeckRelevanceResult) res.toArray()[0];
 
-        assertTrue(result.getDeck() == 2);
-        assertTrue(result.getCount() == 1);
+        assertTrue(result.getDeck().equals("2"));
+        assertTrue(result.getCount().equals("1"));
     }
 
     @Test
@@ -123,8 +123,8 @@ public class SearchServiceTest {
         assertTrue(res.size() == 1);
         SemanticDeckRelevanceResult result = (SemanticDeckRelevanceResult) res.toArray()[0];
 
-        assertTrue(result.getDeck() == 5);
-        assertTrue(result.getCount() == 1);
+        assertTrue(result.getDeck().equals("5"));
+        assertTrue(result.getCount().equals("1"));
     }
 
     @Test
@@ -136,8 +136,8 @@ public class SearchServiceTest {
         assertTrue(res.size() == 1);
         SemanticDeckRelevanceResult result = (SemanticDeckRelevanceResult) res.toArray()[0];
 
-        assertTrue(result.getDeck() == 5);
-        assertTrue(result.getCount() == 1);
+        assertTrue(result.getDeck().equals("5"));
+        assertTrue(result.getCount().equals("1"));
     }
 
     @Test

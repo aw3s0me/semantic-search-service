@@ -28,8 +28,8 @@ public class AnnotationJsonTest {
         // "{\"make\":\"Ford\",\"model\":\"Focus\"}"
         String content = new StringBuilder()
                 .append("{\"body\": \"turtle\", ")
-                .append("\"slide\": 1, ")
-                .append("\"deck\": 2, ")
+                .append("\"slide\": \"1\", ")
+                .append("\"deck\": \"2\", ")
                 .append("\"typeof\": \"Person\", ")
                 .append("\"id\": \"507f1f77bcf86cd799439011\", ")
                 .append("\"resource\": \"http://dbpedia.org/page/Nicholas_II_of_Russia\", ")
@@ -40,8 +40,8 @@ public class AnnotationJsonTest {
                 "http://dbpedia.org/page/Nicholas_II_of_Russia",
                 "507f1f77bcf86cd799439011",
                 "Person",
-                2,
-                1,
+                "2",
+                "1",
                 "turtle"));
         assertThat(this.json.parseObject(content).getId()).isEqualTo("507f1f77bcf86cd799439011");
     }
