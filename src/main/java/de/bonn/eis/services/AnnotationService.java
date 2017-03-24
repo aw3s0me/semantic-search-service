@@ -1,5 +1,6 @@
 package de.bonn.eis.services;
 
+import de.bonn.eis.models.AnnotationListModel;
 import de.bonn.eis.models.AnnotationRequestModel;
 import de.bonn.eis.models.SemanticSearchResult;
 
@@ -8,6 +9,8 @@ import de.bonn.eis.models.SemanticSearchResult;
  */
 public interface AnnotationService {
     boolean create(AnnotationRequestModel annotation);
+
+    boolean bulk(AnnotationListModel list);
 
     boolean update(AnnotationRequestModel annotation);
 

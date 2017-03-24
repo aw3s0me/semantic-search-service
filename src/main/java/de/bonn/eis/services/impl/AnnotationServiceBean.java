@@ -4,6 +4,7 @@ import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
+import de.bonn.eis.models.AnnotationListModel;
 import de.bonn.eis.models.AnnotationRequestModel;
 import de.bonn.eis.models.SemanticSearchResult;
 import de.bonn.eis.services.AnnotationService;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.JAXBException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,6 +37,23 @@ public class AnnotationServiceBean implements AnnotationService {
             this.solrClient.add(statements);
             return true;
         } catch (IllegalAccessException | InstantiationException | UnableToAddException | ParseException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean bulk(AnnotationListModel list) {
+        try {
+            List<Statement> finalStatement = new ArrayList<>();
+            for (AnnotationRequestModel model: list.getList()) {
+                System.out.println("Adding annotation: " + model.getId());
+                finalStatement.addAll(model.getStatements());
+            }
+
+            this.solrClient.add(finalStatement);
+            this.solrClient.commit();
+            return true;
+        } catch (IllegalAccessException | ParseException | InstantiationException | UnableToAddException | UnableToCommitException e) {
             return false;
         }
     }

@@ -1,5 +1,6 @@
 package de.bonn.eis.api;
 
+import de.bonn.eis.models.AnnotationListModel;
 import de.bonn.eis.models.AnnotationRequestModel;
 import de.bonn.eis.models.RestResponseMessage;
 import de.bonn.eis.services.AnnotationService;
@@ -36,6 +37,20 @@ public class AnnotationController {
     public ResponseEntity<RestResponseMessage> createAnnotation(@RequestBody AnnotationRequestModel annotation) {
         boolean res = service.create(annotation);
 
+        if (!res) {
+            return new ResponseEntity<>(new RestResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(new RestResponseMessage(HttpStatus.CREATED), HttpStatus.CREATED);
+    }
+
+    @RequestMapping(
+            value = "/api/annotations/bulk",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RestResponseMessage> bulk(@RequestBody AnnotationListModel list) {
+        boolean res = service.bulk(list);
         if (!res) {
             return new ResponseEntity<>(new RestResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -143,4 +143,17 @@ public class AnnotationRequestModel {
 
         return ListUtils.union(statements, bodyStatements);
     }
+
+    @Override
+    public String toString() {
+        return "AnnotationRequestModel{" +
+                "body='" + body + '\'' +
+                ", slide='" + slide + '\'' +
+                ", deck='" + deck + '\'' +
+                ", typeof='" + typeof + '\'' +
+                ", id='" + id + '\'' +
+                ", resource='" + resource + '\'' +
+                ", keyword='" + keyword + '\'' +
+                '}';
+    }
 }
